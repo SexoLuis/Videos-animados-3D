@@ -1,0 +1,8 @@
+{
+  "name": "videos-animados",
+  "private": true,
+  "description": "Renderizador de escenas HTML/CSS/SVG (Playwright + Chromium) para videos-animados",
+  "dependencies": {
+    "playwright": "1.63.0"
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "titulo": "Los secretos del océano",
+  "paleta": "oceano",
+  "voz": "mb-es2",
+  "velocidad": 155,
+  "musica": "auto",
+  "escenas": [
+    {
+      "tipo": "titulo",
+      "etiqueta": "¿Sabías que...?",
+      "titular": "Los secretos del *océano*",
+      "icono": "oceano",
+      "narracion": "¿Sabías que el océano esconde más secretos que el espacio?"
+    },
+    {
+      "tipo": "dato",
+      "dato": "70%",
+      "titular": "del planeta es *océano*",
+      "narracion": "Cubre el setenta por ciento de la Tierra, y aun así es el lugar menos explorado."
+    },
+    {
+      "tipo": "punto",
+      "titular": "Solo conocemos una *mínima* parte",
+      "icono": "pez",
+      "narracion": "Hemos cartografiado mejor la superficie de Marte que el fondo de nuestros mares."
+    },
+    {
+      "tipo": "lista",
+      "titular": "El océano...",
+      "items": ["Produce oxígeno", "Regula el clima", "Alberga vida única"],
+      "narracion": "Además, produce gran parte del oxígeno, regula el clima y alberga vida única."
+    },
+    {
+      "tipo": "pregunta",
+      "titular": "¿Qué hay en el *fondo*?",
+      "narracion": "¿Qué crees que nos queda por descubrir ahí abajo?"
+    },
+    {
+      "tipo": "cierre",
+      "titular": "¿Te *sorprendió*?",
+      "icono": "corazon",
+      "cta": "Sígueme para más",
+      "narracion": "Sígueme para descubrir más curiosidades."
+    }
+  ]
+}
