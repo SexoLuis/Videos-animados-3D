@@ -1,0 +1,56 @@
+{
+  "titulo": "Si un perro agresivo se acerca",
+  "voz": "mb-es2",
+  "velocidad": 140,
+  "tono": 50,
+  "musica": "auto",
+  "volumen_musica": 0.22,
+  "acento": "#FFD23F",
+  "mayusculas": false,
+  "duracion_clip": 10,
+
+  "personaje": {
+    "nombre": "Nubo",
+    "descripcion": "Personaje original en 3D estilo película animada: cabeza blanca, lisa y perfectamente redonda (sin pelo ni orejas), ojos grandes ovalados negros y brillantes, cejas pequeñas, camiseta verde menta, brazos y piernas finos gris oscuro, zapatillas blancas con cordones menta.",
+    "prompt_ficha": "Character design sheet of an original 3D animated character named Nubo, high-end animated feature film CGI render. A smooth glossy white perfectly round head with no hair and no ears, large glossy black oval eyes with bright white highlights, small expressive dark eyebrows, a small mouth. Mint-green short-sleeve crew-neck t-shirt, slim matte charcoal-grey tube-like arms and legs, simple charcoal-grey four-fingered hands, white sneakers with mint laces. Full body, front view, relaxed neutral pose, plain light grey studio background, soft even studio lighting, no text.",
+    "imagen_ficha": "imagenes/00_ficha_nubo.png"
+  },
+
+  "modelos": {
+    "ficha": "google/nano-banana-2.1",
+    "imagen_escena": "google/nano-banana-2.1/edit",
+    "video": "fal-ai/pixverse/v6/image-to-video",
+    "parametros_video": {"duration": 10, "resolution": "720p", "style": "3d_animation", "generate_audio_switch": false},
+    "nota": "Antes de generar: comprobar saldo y precio. Las imágenes de escena se generan con la ficha como referencia (image_urls) para que Nubo sea siempre igual."
+  },
+
+  "escenas": [
+    {
+      "id": "01_gancho",
+      "narracion": "Si un perro agresivo se acerca a ti, guarda este video. Lo que hagas en los próximos segundos importa.",
+      "transicion": "fade",
+      "imagen": "imagenes/01_gancho.png",
+      "clip": "clips/01_gancho.mp4",
+      "prompt_imagen": "Use the character from the reference image and keep his exact design. Vertical 9:16 frame, high-end animated feature film CGI style. Nubo walks on a sunny dirt path in a lush park lined with tall green trees, and suddenly freezes in fear: wide eyes, sweat drops flying from his head, one hand raised. In the left foreground a scruffy brown stray dog with bared teeth growls at him, body low and tense. Photorealistic park environment, warm morning sunlight, soft shadows, shallow depth of field. Keep the center of the frame uncluttered for subtitles. No text.",
+      "prompt_movimiento": "The scruffy brown dog growls and takes two slow, tense steps toward Nubo, lips pulled back. Nubo flinches backwards, trembling, sweat drops falling, raising one hand defensively. Leaves sway gently in the breeze. Slow subtle camera push-in. Smooth animated-film motion, consistent character design."
+    },
+    {
+      "id": "02_quieto",
+      "narracion": "No corras ni le grites. Quédate quieto como un árbol, de lado, con los brazos pegados y sin mirarle a los ojos.",
+      "transicion": "smoothleft",
+      "imagen": "imagenes/02_quieto.png",
+      "clip": "clips/02_quieto.mp4",
+      "prompt_imagen": "Use the character from the reference image and keep his exact design. Vertical 9:16 frame, high-end animated feature film CGI style, same sunny park path. Nubo stands completely still, turned sideways to the dog like a tree, arms pressed tightly against his body, head lowered, eyes calmly looking at the ground, not at the dog. The scruffy brown stray dog is a few steps away, sniffing the air, now hesitant and less aggressive. Warm sunlight, shallow depth of field. Keep the center of the frame uncluttered for subtitles. No text.",
+      "prompt_movimiento": "Nubo stays perfectly still and calm, breathing slowly, arms pressed to his body, gaze lowered. The brown dog circles slowly, sniffs near his legs, its tense posture relaxing, tail lowering. Gentle breeze in the trees. Slow orbiting camera move. Smooth animated-film motion, consistent character design."
+    },
+    {
+      "id": "03_alejarse",
+      "narracion": "Pon tu mochila entre los dos y aléjate despacio. Si te tira al suelo, hazte bola y protégete el cuello.",
+      "transicion": "fade",
+      "imagen": "imagenes/03_alejarse.png",
+      "clip": "clips/03_alejarse.mp4",
+      "prompt_imagen": "Use the character from the reference image and keep his exact design, now wearing a small mint-green backpack. Vertical 9:16 frame, high-end animated feature film CGI style, same sunny park path. Nubo calmly holds his backpack in front of him as a shield between himself and the scruffy brown stray dog, and steps slowly backwards. The dog has lost interest and is starting to turn away. Warm sunlight, shallow depth of field. Keep the center of the frame uncluttered for subtitles. No text.",
+      "prompt_movimiento": "Nubo slowly walks backwards holding the backpack in front of him, calm and careful. The brown dog loses interest, turns around and trots away down the path. Nubo exhales with relief and gives a small thumbs up. Slow camera pull-back. Smooth animated-film motion, consistent character design."
+    }
+  ]
+}

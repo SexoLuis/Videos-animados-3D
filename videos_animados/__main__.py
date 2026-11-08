@@ -4,6 +4,7 @@
   python3 -m videos_animados generar --tema "El océano" --texto "El océano cubre..."
   python3 -m videos_animados generar --tema "El océano" --texto-archivo narracion.txt
   python3 -m videos_animados nuevo --tema "Los volcanes"        # crea guiones/los-volcanes.json para editar
+  python3 -m videos_animados clips --historia proyectos/x/historia.json [--marcadores]  # une clips de IA
   python3 -m videos_animados verificar                          # comprueba dependencias
 """
 
@@ -95,6 +96,13 @@ def cmd_generar(args) -> int:
     return 0
 
 
+def cmd_clips(args) -> int:
+    from . import clips
+    clips.montar(Path(args.historia), Path(args.salida) if args.salida else None,
+                 marcadores=args.marcadores, sin_musica=args.sin_musica, conservar=args.conservar)
+    return 0
+
+
 def main(argv=None) -> int:
     p = argparse.ArgumentParser(prog="videos_animados", description="Genera videos animados verticales (1080x1920) "
                                 "con narración, subtítulos y música.")
@@ -123,6 +131,14 @@ def main(argv=None) -> int:
     n.add_argument("-o", "--salida")
     n.add_argument("--forzar", action="store_true")
     n.set_defaults(func=cmd_nuevo)
+
+    c = sub.add_parser("clips", help="une clips ya generados (p. ej. con IA) con narración, subtítulos y música")
+    c.add_argument("--historia", required=True, help="archivo JSON con las escenas, sus clips y narraciones")
+    c.add_argument("-o", "--salida", help="ruta del MP4 (por defecto <carpeta de la historia>/salida/<titulo>.mp4)")
+    c.add_argument("--marcadores", action="store_true", help="usa clips provisionales para las escenas que falten")
+    c.add_argument("--sin-musica", action="store_true", help="sin música de fondo")
+    c.add_argument("--conservar", action="store_true", help="conserva los archivos intermedios")
+    c.set_defaults(func=cmd_clips)
 
     v = sub.add_parser("verificar", help="comprueba que están instaladas las dependencias")
     v.set_defaults(func=cmd_verificar)

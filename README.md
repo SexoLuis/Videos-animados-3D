@@ -73,6 +73,17 @@ En `salida/` se crean:
 - `<titulo>.srt`: los subtítulos, por si quieres subirlos aparte a YouTube o TikTok.
 - `<titulo>.json`: el guion resuelto, con los tiempos de cada escena.
 
+### 4. Unir clips ya generados (por ejemplo, con IA)
+
+Si tienes clips de video (de fal.ai u otra herramienta), el comando `clips` los une en un
+video vertical con narración, subtítulos y música. Las escenas se describen en un JSON de
+"historia"; consulta el ejemplo en `proyectos/perro_agresivo/`.
+
+```bash
+python3 -m videos_animados clips --historia proyectos/perro_agresivo/historia.json
+python3 -m videos_animados clips --historia proyectos/perro_agresivo/historia.json --marcadores  # prueba sin clips
+```
+
 ## Opciones de `generar`
 
 | Opción | Descripción |
