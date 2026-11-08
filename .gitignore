@@ -3,3 +3,7 @@ __pycache__/
 *.pyc
 node_modules/
 package-lock.json
+remotion/node_modules/
+proyectos/*/.work/
+proyectos/*/stills/
+proyectos/*/*.sheet.jpg
