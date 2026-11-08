@@ -161,3 +161,20 @@ El rasterizado de Chromium por CPU es el paso más lento.
 
 - `ejemplos/prueba_30s.json`: guion de prueba (~31 s). El video resultante está en `ejemplos/prueba_30s.mp4`.
 - `ejemplos/sueno.txt`: texto para el modo automático (~55 s).
+
+## Skills de animación para Claude Code (terceros)
+
+El proyecto incluye cuatro skills de [artemnovitckii/claude-animation-skills](https://github.com/artemnovitckii/claude-animation-skills)
+(licencia MIT, fijadas al commit `5dbea55`) para generar animaciones cortas de 1080 × 1920 desde Claude Code:
+
+| Skill | Qué hace | Ejemplo |
+|---|---|---|
+| `/graph` | gráfico de línea que se dibuja mientras un número sube | `/graph 0 a 100K seguidores en 9 meses: 1.2K, 3.4K, 9K, 24K, 51K, 100K` |
+| `/minimalistic-graphics` | arte lineal en blanco y negro con una frase | `/minimalistic-graphics cada paso parece pequeño hasta que miras atrás` |
+| `/map-route` | ruta sobre un mapa 3D con pin y tiempo estimado | `/map-route de casa al gimnasio, 2,8 km, 9 minutos` |
+| `/breakdown` | vista 3D de un objeto despiezado con etiquetas | `/breakdown mi móvil, cada pieza etiquetada` |
+
+- El código está en `third_party/claude-animation-skills/`. Las skills se activan desde `.claude/skills/`, que contiene enlaces relativos a esa carpeta.
+- Para prepararlas después de clonar el repositorio: `./scripts/instalar_skills_animacion.sh`. El script instala three.js y GSAP. HyperFrames, que es quien renderiza, se descarga con `npx` la primera vez que se usa una skill.
+- Para ver los resultados en movimiento, visita la [página de demostración](https://novitckii.com/resources/animation-skills/).
+- No se incluyen `/stick-figure` ni `/zach-d-films`: según la documentación de los modelos, su alineación de palabras (Parakeet v2) solo reconoce inglés, y además necesitan unos 1 GB de modelos.
