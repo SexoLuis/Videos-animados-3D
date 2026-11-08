@@ -1,0 +1,32 @@
+{
+  "titulo": "Bubu y el espinosaurio",
+  "salida": "salida/bubu_espinosaurio.mp4",
+  "transicion": "fade",
+  "duracion_transicion": 0.5,
+  "acento": "#FFD23F",
+  "gancho": {
+    "clip": "clips/01_rio.mp4",
+    "desde": 8.35,
+    "hasta": 9.15,
+    "zoom": 1.25,
+    "destello": true,
+    "texto": [0.1, 3.3, "Si Bubu hace un solo *ruido*, está perdido."]
+  },
+  "escenas": [
+    {
+      "clip": "clips/01_rio.mp4",
+      "subtitulos": [
+        [2.7, 6.0, "Esto es un *espinosaurio*, más largo que un T. rex."],
+        [6.2, 9.4, "Medía unos *15 metros* de largo."]
+      ]
+    },
+    {
+      "clip": "clips/02_peces.mp4",
+      "subtitulos": [
+        [0.3, 3.2, "Pero no cazaba en *tierra*…"],
+        [3.4, 6.6, "Metía su hocico de *cocodrilo* en el río"],
+        [6.8, 9.6, "para atrapar *peces* gigantes."]
+      ]
+    }
+  ]
+}
