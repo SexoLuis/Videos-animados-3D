@@ -1,0 +1,139 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+@font-face{font-family:Inter;src:url(../third_party/claude-animation-skills/kit/fonts/inter-700-normal.woff2);font-weight:700}
+@font-face{font-family:Inter;src:url(../third_party/claude-animation-skills/kit/fonts/inter-500-normal.woff2);font-weight:500}
+@font-face{font-family:Mono;src:url(../third_party/claude-animation-skills/kit/fonts/jetbrains-mono-latin-500-normal.woff2)}
+html,body{margin:0;width:1080px;height:1920px;overflow:hidden;font-family:Inter,sans-serif}
+svg{display:block}
+</style></head><body>
+<script>
+const v = new URLSearchParams(location.search).get('v');
+const S = {};
+
+/* 05 — vista explosionada 3D */
+S.breakdown = () => {
+  const capas = [
+    ['01','Cristal','templado · 0,6 mm','#cfe3ff',0.35],
+    ['02','Pantalla','6,3 in · 120 Hz','#0b1020',1],
+    ['03','Marco','aluminio · 7,8 mm','#9aa3ad',1],
+    ['04','Placa base','chip · 5G · NFC','#1f6f4a',1],
+    ['05','Batería','4.000 mAh','#2a2f38',1],
+    ['06','Tapa trasera','vidrio mate','#3b4250',1],
+  ];
+  let g='';
+  capas.forEach((c,i)=>{
+    const y=430+i*230;
+    // losange isométrico
+    const pts=(dy)=>`${250},${y+dy} ${520},${y-120+dy} ${700},${y-30+dy} ${430},${y+90+dy}`;
+    g+=`<polygon points="${pts(18)}" fill="#000" opacity=".35"/>`;
+    g+=`<polygon points="${pts(0)}" fill="${c[3]}" fill-opacity="${c[4]}" stroke="#ffffff" stroke-opacity=".55" stroke-width="2"/>`;
+    if(i===1) g+=`<text x="470" y="${y-10}" fill="#fff" font-size="34" font-family="Inter" font-weight="700" transform="rotate(-24 470 ${y-10})">9:41</text>`;
+    if(i===3) for(let k=0;k<6;k++) g+=`<rect x="${360+k*40}" y="${y-30-k*16}" width="26" height="18" fill="#c9a227" transform="skewY(-24)" transform-origin="${360+k*40} ${y}"/>`;
+    g+=`<line x1="700" y1="${y-30}" x2="790" y2="${y-30}" stroke="#fff" stroke-width="2"/><circle cx="700" cy="${y-30}" r="5" fill="#fff"/>`;
+    g+=`<text x="800" y="${y-38}" fill="#fff" font-size="34" font-family="Inter" font-weight="700">${c[0]} ${c[1]}</text>`;
+    g+=`<text x="800" y="${y}" fill="#8b93a1" font-size="24" font-family="Mono">${c[2]}</text>`;
+  });
+  return `<svg width="1080" height="1920"><defs><radialGradient id="bg" cx=".5" cy=".45" r=".7"><stop offset="0" stop-color="#2a2f3a"/><stop offset="1" stop-color="#07080b"/></radialGradient></defs>
+  <rect width="1080" height="1920" fill="url(#bg)"/>
+  <text x="80" y="150" fill="#8b93a1" font-size="30" font-family="Mono">TELÉFONO / VISTA EXPLOSIONADA</text>
+  <text x="80" y="230" fill="#fff" font-size="72" font-family="Inter" font-weight="700">¿Qué hay dentro?</text>
+  ${g}
+  <text x="80" y="1830" fill="#8b93a1" font-size="22" font-family="Mono">skill /breakdown · 3D WebGL · las capas se separan una a una</text></svg>`;
+};
+
+/* 06 — mapa con ruta */
+S.map = () => {
+  let g='';
+  // manzanas
+  for(let r=0;r<9;r++) for(let c=0;c<5;c++){
+    const x=60+c*200, y=330+r*170;
+    const parque=(r*5+c)%7===3;
+    g+=`<rect x="${x}" y="${y}" width="160" height="130" rx="14" fill="${parque?'#bfe3c4':'#ffffff'}" stroke="#e3e6ea" stroke-width="2"/>`;
+    if(!parque) g+=`<rect x="${x+20}" y="${y+18}" width="${50+(r*c%3)*20}" height="${40+(r+c)%3*15}" rx="6" fill="#eef0f3"/>`;
+  }
+  // río
+  g+=`<path d="M-20 1080 C 250 1000, 420 1200, 700 1100 S 1000 1050, 1100 1150" stroke="#9fd0f5" stroke-width="70" fill="none"/>`;
+  // ruta
+  g+=`<path d="M160 1600 L160 1460 L560 1460 L560 1135 L760 1135 L760 800 L960 800 L960 640" stroke="#2f6bff" stroke-width="22" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`;
+  g+=`<path d="M160 1600 L160 1460 L560 1460 L560 1135 L760 1135 L760 800 L960 800 L960 640" stroke="#fff" stroke-width="6" fill="none" stroke-dasharray="2 22" stroke-linecap="round"/>`;
+  g+=`<circle cx="160" cy="1600" r="26" fill="#fff" stroke="#2f6bff" stroke-width="10"/>`;
+  // pin
+  g+=`<ellipse cx="960" cy="645" rx="30" ry="10" fill="#000" opacity=".18"/><path d="M960 640 C 930 590, 910 570, 910 540 a50 50 0 1 1 100 0 c0 30 -20 50 -50 100z" fill="#ef3b36"/><circle cx="960" cy="540" r="18" fill="#fff"/>`;
+  // tarjetas
+  const card=(x,y,w,h,inner)=>`<g><rect x="${x}" y="${y+8}" width="${w}" height="${h}" rx="28" fill="#000" opacity=".08"/><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="28" fill="#fff"/>${inner}</g>`;
+  g+=card(60,120,460,150,`<text x="100" y="185" font-size="28" fill="#6b7280" font-family="Inter" font-weight="500">Llegada en</text><text x="100" y="245" font-size="64" fill="#111" font-family="Inter" font-weight="700">12 min</text>`);
+  g+=card(560,120,460,150,`<text x="600" y="185" font-size="28" fill="#6b7280" font-family="Inter" font-weight="500">Destino</text><text x="600" y="240" font-size="44" fill="#111" font-family="Inter" font-weight="700">Museo del Mar</text>`);
+  return `<svg width="1080" height="1920"><rect width="1080" height="1920" fill="#f4f5f7"/>${g}
+  <text x="60" y="1830" fill="#6b7280" font-size="22" font-family="Mono">skill /map-route · ciudad 3D · ruta animada + pin</text></svg>`;
+};
+
+/* 07 — minimalista lineal */
+S.mini = () => {
+  let g='';
+  for(let i=0;i<6;i++){
+    const x=170+i*130, y=1500-i*150;
+    g+=`<rect x="${x}" y="${y}" width="130" height="${1650-y}" fill="none" stroke="#fff" stroke-width="3"/>`;
+  }
+  // arcos del salto
+  for(let i=0;i<4;i++){
+    const x=235+i*130, y=1490-i*150;
+    g+=`<path d="M${x} ${y-14} Q ${x+65} ${y-190} ${x+130} ${y-164}" stroke="#fff" stroke-opacity=".35" stroke-width="2" fill="none" stroke-dasharray="4 10"/>`;
+  }
+  const dx=170+5*130+65, dy=1500-5*150-30;
+  g+=`<circle cx="${dx}" cy="${dy}" r="22" fill="#fff"/>`;
+  g+=`<ellipse cx="${dx}" cy="${dy}" rx="90" ry="34" fill="none" stroke="#fff" stroke-width="2" transform="rotate(-18 ${dx} ${dy})"/>`;
+  g+=`<circle cx="${dx+84}" cy="${dy-30}" r="6" fill="#fff"/>`;
+  return `<svg width="1080" height="1920"><rect width="1080" height="1920" fill="#000"/>
+  <text x="540" y="420" fill="#fff" font-size="54" font-family="Inter" font-weight="500" text-anchor="middle">un paso cada día</text>
+  <text x="540" y="490" fill="#777" font-size="34" font-family="Inter" font-weight="500" text-anchor="middle">y un día, la cima</text>
+  ${g}
+  <text x="540" y="1830" fill="#666" font-size="22" font-family="Mono" text-anchor="middle">skill /minimalistic-graphics · line art en blanco y negro</text></svg>`;
+};
+
+/* 08 — animación 2D dibujada a mano (animation-studio) */
+S.cartoon = () => {
+  const ink='stroke="#2b1d14" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"';
+  let notas='';
+  [[220,520,-10],[330,430,8],[820,470,-6],[900,600,10],[700,380,0]].forEach(([x,y,r])=>{
+    notas+=`<g transform="rotate(${r} ${x} ${y})"><ellipse cx="${x}" cy="${y}" rx="20" ry="15" fill="#2b1d14"/><line x1="${x+18}" y1="${y}" x2="${x+18}" y2="${y-70}" ${ink}/><path d="M${x+18} ${y-70} q 30 10 30 40" fill="none" ${ink}/></g>`;
+  });
+  return `<svg width="1080" height="1920"><defs>
+  <linearGradient id="cielo" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff9a62"/><stop offset=".55" stop-color="#ffc97a"/><stop offset="1" stop-color="#ffe7b0"/></linearGradient>
+  <filter id="papel"><feTurbulence baseFrequency=".9" numOctaves="2" seed="3"/><feColorMatrix values="0 0 0 0 .5  0 0 0 0 .4  0 0 0 0 .3  0 0 0 .07 0"/><feComposite in2="SourceGraphic" operator="in"/></filter>
+  </defs>
+  <rect width="1080" height="1920" fill="url(#cielo)"/>
+  <circle cx="540" cy="900" r="260" fill="#ffef9e" ${ink}/>
+  <path d="M-20 1180 Q 300 1020 600 1150 T 1100 1100 L1100 1940 L-20 1940Z" fill="#8cc672" ${ink}/>
+  <path d="M-20 1400 Q 400 1260 1100 1420 L1100 1940 L-20 1940Z" fill="#6fae58" ${ink}/>
+  <!-- zorrito -->
+  <g transform="translate(380 1280)">
+    <path d="M-110 120 q -90 -30 -70 -130 q 40 60 90 70z" fill="#ff8a3d" ${ink}/>
+    <ellipse cx="0" cy="110" rx="95" ry="110" fill="#ff8a3d" ${ink}/>
+    <ellipse cx="0" cy="140" rx="55" ry="65" fill="#fff4e0" ${ink}/>
+    <circle cx="0" cy="-40" r="105" fill="#ff8a3d" ${ink}/>
+    <path d="M-85 -100 L-70 -200 L-20 -130z" fill="#ff8a3d" ${ink}/><path d="M85 -100 L70 -200 L20 -130z" fill="#ff8a3d" ${ink}/>
+    <path d="M-60 0 q 60 60 120 0 q -60 30 -120 0z" fill="#fff4e0" ${ink}/>
+    <circle cx="-38" cy="-45" r="12" fill="#2b1d14"/><circle cx="38" cy="-45" r="12" fill="#2b1d14"/>
+    <circle cx="0" cy="0" r="12" fill="#2b1d14"/>
+    <path d="M-30 30 q 30 25 60 0" fill="none" ${ink}/>
+    <line x1="-40" y1="215" x2="-55" y2="290" ${ink}/><line x1="40" y1="215" x2="60" y2="285" ${ink}/>
+  </g>
+  <!-- robot -->
+  <g transform="translate(720 1260)">
+    <line x1="0" y1="-150" x2="0" y2="-205" ${ink}/><circle cx="0" cy="-215" r="16" fill="#ff5d5d" ${ink}/>
+    <rect x="-80" y="-150" width="160" height="120" rx="30" fill="#7fd3e6" ${ink}/>
+    <circle cx="-32" cy="-92" r="18" fill="#fff" ${ink}/><circle cx="32" cy="-92" r="18" fill="#fff" ${ink}/>
+    <circle cx="-30" cy="-90" r="7" fill="#2b1d14"/><circle cx="34" cy="-90" r="7" fill="#2b1d14"/>
+    <rect x="-70" y="-20" width="140" height="150" rx="26" fill="#a6e3ef" ${ink}/>
+    <circle cx="0" cy="50" r="22" fill="#ffd25e" ${ink}/>
+    <path d="M-70 10 q -60 30 -80 -30" fill="none" ${ink}/><path d="M70 10 q 50 40 70 100" fill="none" ${ink}/>
+    <line x1="-35" y1="130" x2="-35" y2="190" ${ink}/><line x1="35" y1="130" x2="35" y2="190" ${ink}/>
+  </g>
+  ${notas}
+  <rect width="1080" height="1920" filter="url(#papel)"/>
+  <text x="540" y="230" fill="#2b1d14" font-size="66" font-family="Inter" font-weight="700" text-anchor="middle">Amigos al atardecer</text>
+  <text x="540" y="1830" fill="#2b1d14" font-size="22" font-family="Mono" text-anchor="middle" opacity=".7">animation-studio · 2D dibujado en código + música sintetizada</text></svg>`;
+};
+document.body.innerHTML = S[v]();
+</script></body></html>
