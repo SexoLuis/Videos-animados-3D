@@ -21,24 +21,29 @@ Habitación: ventana con lluvia a la izquierda de la cama, mesita de noche con l
 Pequeño técnico caricaturesco, redondito, con overol naranja, casco y auriculares, ojos grandes; sala de control
 futurista con un **termostato gigante sin números** (columna de luz que sube de azul a rojo) y una palanca grande.
 
-## Escenas y planos (tiempos del usuario; se ajustarán al audio real)
-| # | Tiempo | Plano | Contenido |
-|---|---|---|---|
-| 1 | 0:00–0:04 | 1A | Plano general, zoom rápido: tiembla bajo 3 cobijas, luz azul, lluvia en la ventana |
-| 1 | 0:04–0:10 | 1B | Primer plano: dientes castañean, se tapa hasta la cabeza con otra cobija |
-| 2 | 0:10–0:14 | 2A | La cámara entra por la frente hasta el cerebro: sala de control en azul |
-| 2 | 0:14–0:18 | 2B | El operador vigila el termostato gigante; salta la alarma |
-| 2 | 0:18–0:22 | 2C | Sube la palanca: todo pasa de azul a rojo, botones de emergencia |
-| 3 | 0:22–0:26 | 3A | De vuelta en la cama: empieza a temblar sin control |
-| 3 | 0:26–0:31 | 3B | Músculos 3D contrayéndose como motores, pulsos rojos en cada contracción |
-| 3 | 0:31–0:35 | 3C | Tiembla tanto que la cama vibra y la almohada salta |
-| 4 | 0:35–0:41 | 4A | Vasos bajo la piel que se estrechan; el glow rojo se retira hacia dentro, extremidades azules |
-| 4 | 0:41–0:47 | 4B | Se toca pies y manos, sorprendido de lo fríos que están, sigue temblando |
-| 5 | 0:47–0:52 | 5A | Sala de control: el objetivo baja, apaga la calefacción, activa el enfriamiento (cian) |
-| 5 | 0:52–0:57 | 5B | Empapado de sudor, se arranca las cobijas una por una |
-| 5 | 0:57–1:02 | 5C | Se abanica con la almohada y abre la ventana buscando aire |
-| 6 | 1:02–1:08 | 6A | Sentado, despeinado, cobijas por el suelo, termómetro al lado, se abanica lento, mira alrededor |
-| 6 | 1:08–1:15 | 6B | Acercamiento lento al rostro: resignación, pequeño movimiento de cabeza y mirada a cámara |
+## Escenas y planos (sincronizados con `narracion.mp3`, 52,85 s)
+El audio dura **52,85 s**, no 1:15: el video dura lo mismo que la narración.
+El orden sigue a la narración (las manos y pies helados se mencionan antes de "los temblores producen calor").
+
+| # | Tiempo | Plano | Narración | Imagen |
+|---|---|---|---|---|
+| 1 | 0,00–3,45 | 1A | "¿Por qué cuando tienes fiebre sientes que te estás congelando," | Plano general, zoom rápido: tiembla bajo 3 cobijas, luz azul, lluvia en la ventana |
+| 1 | 3,45–5,60 | 1B | "aunque tu cuerpo esté ardiendo?" | Primer plano: dientes castañean, glow rojo bajo la piel, se tapa hasta la cabeza |
+| 2 | 5,60–8,00 | 2A | "Esto pasa porque, cuando te enfermas," | La cámara atraviesa la frente hasta el cerebro: sala de control azul |
+| 2 | 8,00–11,60 | 2B | "tu cerebro cambia la temperatura que quiere mantener en tu cuerpo." | El operador vigila el termostato gigante; salta la alarma |
+| 2 | 11,60–16,20 | 2C | "Es como si tu termostato pasara de 37 a 39 grados." | Sube la palanca: la columna de luz sube, todo pasa de azul a rojo |
+| 2 | 16,20–21,55 | 2D | "Entonces, aunque ya estés caliente, tu cerebro siente que todavía te falta calor." | El operador, alarmado, aporrea botones de emergencia mientras el personaje ya brilla de calor |
+| 3 | 21,55–24,60 | 3A | "Por eso empiezas a temblar, te pones más cobijas" | En la cama: empieza a temblar y se echa otra cobija encima |
+| 4 | 24,60–27,85 | 4A+4B | "y hasta tus manos y pies pueden sentirse helados." | Vasos bajo la piel que se estrechan → se toca los pies y las manos, sorprendido |
+| 3 | 27,85–31,20 | 3B | "Tu cuerpo está intentando alcanzar esa nueva temperatura," | Músculos 3D como motores, pulsos rojos en cada contracción |
+| 3 | 31,20–34,10 | 3C | "y los temblores son una forma de producir calor." | Tiembla tanto que la cama vibra y la almohada salta |
+| 5 | 34,10–38,90 | 5A | "Pero cuando la fiebre comienza a bajar, tu cerebro vuelve a ajustar ese termostato." | Sala de control: baja la palanca, apaga la calefacción, activa el enfriamiento (cian) |
+| 5 | 38,90–41,90 | 5B | "Y entonces ocurre lo contrario: empiezas a sudar," | Empapado de sudor, se arranca las cobijas una por una |
+| 5 | 41,90–45,20 | 5C | "te quitas las cobijas y ya no soportas el calor." | Se abanica con la almohada y abre la ventana |
+| 6 | 45,20–49,50 | 6A | "Por eso, cuando tienes fiebre, puedes pasar de sentir que te estás congelando" | Sentado, despeinado, cobijas por el suelo, termómetro, mira alrededor |
+| 6 | 49,50–52,85 | 6B | "a sentir que te estás derritiendo, en cuestión de horas." | Acercamiento lento al rostro: resignación, movimiento de cabeza, mirada a cámara |
+
+Los tiempos por palabra están en `tiempos.json` (generado por `alinear.py` a partir de `guion.txt` y del audio).
 
 ## Flujo de producción
 1. Audio de narración del usuario → transcripción con tiempos por palabra → ajustar los cortes de la tabla.
@@ -48,5 +53,5 @@ futurista con un **termostato gigante sin números** (columna de luz que sube de
 5. Montaje en Remotion: cortes exactos al audio, transiciones, subtítulos, marca de agua, −14 LUFS.
 
 ## Pendiente
-- [ ] Audio de narración (el usuario lo proporcionará).
+- [x] Audio de narración (`narracion.mp3`, 52,85 s).
 - [ ] Aprobación del gasto en fal (imágenes + video).
