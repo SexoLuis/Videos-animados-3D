@@ -13,3 +13,5 @@ fabrica/videos/*/*.mp4
 fabrica/videos/*/mezcla.wav
 fabrica/video/public/mezcla.wav
 fabrica/stills/
+fabrica/video/src/entradas/
+fabrica/video/public/audio/

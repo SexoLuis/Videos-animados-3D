@@ -79,11 +79,14 @@ Hay dos vías; usa la que esté disponible en la sesión:
 - `fabrica/videos/<slug>/eventos.json`: efectos sincronizados `[{"t": s, "sfx": nombre, "g": ganancia, "d": dur}]`
   (lista de efectos en `fabrica/scripts/audio.py`).
 
-## 5 · Revisión y render
-- `fabrica/scripts/render.sh <slug> --prueba` → mira `fabrica/videos/<slug>/hoja.png` con Read y corrige:
-  caras tapadas, arte bajo los subtítulos, personajes cortados, marca de agua ilegible, planos vacíos.
-- `fabrica/scripts/render.sh <slug>` → render final (≈10-15 min, concurrency 1 a propósito). Debe terminar con
-  `sospechosos: ninguno`. Mira `<slug>_hoja.png` antes de entregar.
+## 5 · Revisión y render (los 3 a la vez)
+- Por cada video: `fabrica/scripts/render.sh <slug> --prueba` → mira `fabrica/videos/<slug>/hoja.png` con Read y
+  corrige caras tapadas, arte bajo los subtítulos, personajes cortados, marca de agua ilegible y planos vacíos.
+- **No hagas el render final de cada video por separado.** Cuando los 3 tengan su hoja de contacto aprobada,
+  renderízalos juntos en segundo plano:
+  `fabrica/scripts/render_varios.sh <slug1> <slug2> <slug3>` (≈15-20 min en total; cada uno deja `videos/<slug>/render.log`).
+  Cada línea final debe decir `sospechosos: ninguno`; si un video falla, vuelve a lanzar solo ese con
+  `fabrica/scripts/render.sh <slug>`. Mira cada `<slug>_hoja.png` antes de entregar.
 
 ## 6 · Entrega
 - Añade cada tema a `fabrica/registro.md` (fecha, slug, título, gancho).

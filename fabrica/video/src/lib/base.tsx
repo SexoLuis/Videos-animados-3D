@@ -3,7 +3,7 @@
  * Utilidades de animación, fondos con viñeta, bokeh, cámara, subtítulos, marca de agua y la plantilla de video.
  */
 import React from 'react';
-import { AbsoluteFill, Audio, Sequence, interpolate, spring, Easing, staticFile, useCurrentFrame } from 'remotion';
+import { AbsoluteFill, Audio, Sequence, interpolate, spring, Easing, staticFile, useCurrentFrame, getInputProps } from 'remotion';
 import '@fontsource/poppins/700.css';
 import '@fontsource/poppins/800.css';
 
@@ -166,6 +166,6 @@ export const Video: React.FC<{ planos: [number, React.FC][]; total: number; pala
     <AbsoluteFill style={{ background: 'linear-gradient(to bottom, rgba(8,4,10,.55) 0%, rgba(8,4,10,0) 26%)' }} />
     <Subtitulos palabras={palabras} claves={claves} />
     <MarcaDeAgua />
-    <Audio src={staticFile(audio)} />
+    <Audio src={staticFile(((getInputProps() as { audio?: string }).audio) ?? audio)} />
   </AbsoluteFill>
 );
