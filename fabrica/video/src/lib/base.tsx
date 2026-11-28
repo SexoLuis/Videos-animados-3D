@@ -141,7 +141,7 @@ export const Subtitulos: React.FC<{ palabras: Palabra[]; claves: string[] }> = (
 
 export const MarcaDeAgua: React.FC = () => (
   <div style={{ position: 'absolute', bottom: 150, width: '100%', textAlign: 'center', fontFamily: 'Poppins, sans-serif', fontWeight: 800,
-    fontSize: 44, color: 'rgba(255,255,255,.85)', textShadow: '0 2px 6px rgba(0,0,0,.8), 0 0 2px rgba(0,0,0,.9)' }}>@CortoYCurioso</div>
+    fontSize: 44, color: 'rgba(255,255,255,.92)', WebkitTextStroke: '2px rgba(20,10,20,.9)', paintOrder: 'stroke fill', textShadow: '0 3px 8px rgba(0,0,0,.7)' }}>@CortoYCurioso</div>
 );
 
 const Fade: React.FC<{ first: boolean; children: React.ReactNode }> = ({ first, children }) => {

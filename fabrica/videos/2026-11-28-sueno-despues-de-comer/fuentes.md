@@ -1,0 +1,3 @@
+- Triptófano del pavo similar al del pollo y otras carnes: https://www.health.harvard.edu/blog/turkey-tryptophan-and-sleepiness (Harvard Health)
+- Somnolencia posprandial, tamaño de la comida, sistema parasimpático y hormonas intestinales: https://www.sleepfoundation.org/nutrition/why-do-i-get-tired-after-eating (Sleep Foundation)
+- Bajón de energía de media tarde por el ritmo circadiano: https://www.sleepfoundation.org/circadian-rhythm (Sleep Foundation)

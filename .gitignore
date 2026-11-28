@@ -9,3 +9,7 @@ proyectos/*/stills/
 proyectos/*/*.sheet.jpg
 respaldo/
 proyectos/fiebre/video/public/mezcla.wav
+fabrica/videos/*/*.mp4
+fabrica/videos/*/mezcla.wav
+fabrica/video/public/mezcla.wav
+fabrica/stills/

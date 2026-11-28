@@ -1,0 +1,19 @@
+[
+ {"t": 0.4, "sfx": "ronquido"}, {"t": 2.1, "sfx": "ronquido"},
+ {"t": 3.9, "sfx": "whoosh"}, {"t": 4.1, "sfx": "pop"},
+ {"t": 6.1, "sfx": "campanita"},
+ {"t": 7.7, "sfx": "boing", "g": 0.6}, {"t": 9.2, "sfx": "ding"},
+ {"t": 11.0, "sfx": "zumbido", "d": 2.2}, {"t": 12.3, "sfx": "golpe"}, {"t": 12.7, "sfx": "golpe", "g": 0.7},
+ {"t": 14.1, "sfx": "glup"}, {"t": 14.4, "sfx": "glup"}, {"t": 14.8, "sfx": "estomago"},
+ {"t": 16.5, "sfx": "click"}, {"t": 16.6, "sfx": "golpe", "g": 0.5}, {"t": 16.8, "sfx": "campanita", "g": 0.7},
+ {"t": 18.9, "sfx": "latido"}, {"t": 19.4, "sfx": "latido"}, {"t": 20.1, "sfx": "latido", "g": 0.8},
+ {"t": 21.2, "sfx": "viento", "d": 1.0, "g": 0.8},
+ {"t": 22.2, "sfx": "zumbido", "d": 3.2}, {"t": 23.0, "sfx": "estomago"},
+ {"t": 25.7, "sfx": "burbujas"}, {"t": 26.5, "sfx": "pop"}, {"t": 27.1, "sfx": "pop"}, {"t": 27.7, "sfx": "pop"}, {"t": 29.8, "sfx": "ding"},
+ {"t": 32.3, "sfx": "bostezo_musical"},
+ {"t": 34.2, "sfx": "tictac", "d": 3.0},
+ {"t": 37.6, "sfx": "bostezo_musical", "g": 0.7},
+ {"t": 40.2, "sfx": "ronquido"}, {"t": 42.0, "sfx": "ronquido"}, {"t": 43.0, "sfx": "risa_tuba", "g": 0.7},
+ {"t": 44.4, "sfx": "whoosh"}, {"t": 44.9, "sfx": "golpe"}, {"t": 45.2, "sfx": "ding"},
+ {"t": 46.8, "sfx": "boing"}, {"t": 47.2, "sfx": "ronquido", "g": 0.8}
+]
