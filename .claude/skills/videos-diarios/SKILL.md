@@ -65,6 +65,21 @@ Hay dos vías; usa la que esté disponible en la sesión:
 ## 4 · Escenas (lo más importante)
 - `python3 fabrica/scripts/alinear.py fabrica/videos/<slug>` imprime cada frase con sus tiempos.
   Si sale "AVISO: ritmo raro", el guion y el audio no coinciden: corrígelo antes de seguir.
+- **Elige el reparto del video** (`fabrica/video/src/lib/Reparto.tsx`, hoja de referencia `fabrica/reparto.png`).
+  No uses siempre al barbudo: el protagonista se escoge según el tema y **rota entre días** (revisa la columna
+  «Protagonista» de `fabrica/registro.md` para no repetir el de los 2 videos anteriores). Puede haber
+  secundarios (p. ej. la Dra. Lupe explicando y el barbudo sufriendo).
+  | Personaje | Uso | Código |
+  |---|---|---|
+  | El barbudo | protagonista general, comedia | `<Barbudo …/>` (`Barbudo.tsx`) |
+  | Dra. Lupe | explica, examina, "la ciencia dice" | `<Persona r={REPARTO.doctora} …/>` |
+  | Don Chema | envejecimiento, memoria, articulaciones, sueño ligero | `REPARTO.abuelo` |
+  | Vale | ejercicio, músculos, sudor, corazón, respiración | `REPARTO.deportista` |
+  | Tito | crecimiento, dientes, huesos, infancia, golosinas | `REPARTO.nino` (usar `s={0.85}`) |
+  | Doña Rosa | cocina, digestión, remedios caseros y mitos | `REPARTO.abuela` |
+  | El Godín | estar sentado, estrés, vista cansada, café, oficina | `REPARTO.oficinista` |
+  `<Persona>` tiene la misma API que `<Barbudo>` (hombros en x,y; `cabeza={{ boca, cejas, mira, parpado, sudor, dormido… }}`;
+  `brazoI`/`brazoD`). Si un tema pide un personaje nuevo, créalo como un `Rasgos` más en `REPARTO` (mismo estilo).
 - Planea **12-16 planos de 2-5 s**. Cada plano muestra **literalmente** lo que dice la voz en ese momento.
   Corte = justo antes de que empiece la frase (tiempo × 30 = fotograma). Alterna: barbudo en su situación →
   interior del cuerpo con personajes → barbudo reaccionando → remate final mirando a cámara.
@@ -89,7 +104,7 @@ Hay dos vías; usa la que esté disponible en la sesión:
   `fabrica/scripts/render.sh <slug>`. Mira cada `<slug>_hoja.png` antes de entregar.
 
 ## 6 · Entrega
-- Añade cada tema a `fabrica/registro.md` (fecha, slug, título, gancho).
+- Añade cada tema a `fabrica/registro.md` (fecha, slug, título, gancho, protagonista).
 - Haz commit (sin los MP4 ni mezcla.wav, que están en .gitignore) y push a la rama de la sesión.
 - Envía cada MP4 con `SendUserFile` (status `proactive`, display `render`) con un pie de una línea con el título.
 - Resumen final corto: los 3 títulos, la ruta de cada MP4, los créditos de ElevenLabs gastados/restantes y
