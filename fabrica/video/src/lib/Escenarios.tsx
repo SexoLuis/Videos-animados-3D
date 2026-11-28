@@ -45,6 +45,12 @@ export const Ventana: React.FC<{ x: number; y: number; w?: number; h?: number; h
       <path d={`M${x - 40},${y - 30} L${x + 50},${y - 30} Q${x + 30},${y + h * 0.5} ${x + 60},${y + h + 30} L${x - 40},${y + h + 30} Z`} fill={cortina} {...P} />
       <path d={`M${x + w + 40},${y - 30} L${x + w - 50},${y - 30} Q${x + w - 30},${y + h * 0.5} ${x + w - 60},${y + h + 30} L${x + w + 40},${y + h + 30} Z`} fill={cortina} {...P} />
       <rect x={x - 70} y={y - 46} width={w + 140} height={22} rx={11} fill="#4a3428" {...P} />
+      <rect x={x - 30} y={y + h + 18} width={w + 60} height={22} rx={8} fill="#6b4a3a" {...P} strokeWidth={5} />
+      <g transform={`translate(${x + w - 40},${y + h + 18})`}>
+        <path d="M-14,-10 L-14,-70 Q-14,-86 0,-86 Q14,-86 14,-70 L14,-10 Z" fill="#5fae3a" {...P} strokeWidth={4} />
+        <path d="M-14,-44 L-30,-44 L-30,-60" fill="none" stroke={INK} strokeWidth={14} strokeLinecap="round" /><path d="M-14,-44 L-30,-44 L-30,-60" fill="none" stroke="#5fae3a" strokeWidth={8} strokeLinecap="round" />
+        <path d="M-26,0 L26,0 L20,-20 L-20,-20 Z" fill="#c0553f" {...P} strokeWidth={4} />
+      </g>
     </g>
   );
 };
@@ -71,7 +77,9 @@ export const Plato: React.FC<{ x: number; y: number; s?: number; montaña?: numb
   const h = 30 + montaña * 220;
   return (
     <g transform={`translate(${x},${y}) scale(${s})`}>
+      <ellipse cx={8} cy={26} rx={176} ry={44} fill="#000" opacity={0.18} />
       <ellipse cx={0} cy={10} rx={170} ry={46} fill="#f4f1ea" {...P} />
+      <ellipse cx={0} cy={10} rx={150} ry={36} fill="none" stroke="#7ab0d8" strokeWidth={5} />
       <ellipse cx={0} cy={6} rx={118} ry={28} fill="#e2ddd2" />
       {!vacio && (
         <g>
@@ -94,9 +102,16 @@ export const Comedor: React.FC<{ mesaY?: number; tono?: number; hora?: number; r
   return (
     <g>
       <rect x={-400} y={-300} width={1880} height={mesaY + 400} fill={pared} />
-      {Array.from({ length: 14 }).map((_, i) => <rect key={i} x={-400 + i * 140} y={-300} width={60} height={mesaY + 400} fill="#000" opacity={0.07} />)}
+      <Tapiz y0={-300} y1={mesaY - 300} color={mix(pared, '#ffffff', 0.12)} />
+      <rect x={-400} y={250} width={1880} height={26} fill={mix(pared, '#000', 0.25)} {...P} strokeWidth={4} />
+      {/* zócalo con paneles */}
+      <rect x={-400} y={mesaY - 300} width={1880} height={260} fill={mix(pared, '#000', 0.22)} {...P} />
+      {Array.from({ length: 9 }).map((_, i) => <rect key={i} x={-360 + i * 220} y={mesaY - 270} width={180} height={200} rx={8} fill="none" stroke={mix(pared, '#000', 0.45)} strokeWidth={5} />)}
+      <rect x={-400} y={mesaY - 310} width={1880} height={20} fill={mix(pared, '#ffffff', 0.2)} {...P} strokeWidth={4} />
       <rect x={-400} y={mesaY - 60} width={1880} height={30} fill="#3a1f2a" {...P} />
-      <rect x={-400} y={mesaY + 100} width={1880} height={1000} fill="#2a1620" />
+      <Piso y={mesaY + 100} />
+      {/* plantita en la esquina */}
+      <Planta x={60} y={mesaY - 40} />
       <Ventana x={110} y={520} w={260} h={330} hora={hora} cortina="#7a3a5a" />
       {/* cuadro */}
       <g>
@@ -113,6 +128,7 @@ export const Comedor: React.FC<{ mesaY?: number; tono?: number; hora?: number; r
         <ellipse cx={540} cy={480} rx={30} ry={14} fill="#fff6c0" {...P} strokeWidth={4} />
         <path d="M420,490 L660,490 L900,1240 L180,1240 Z" fill="#ffe8a0" opacity={0.08} />
       </g>
+      <ellipse cx={540} cy={mesaY + 20} rx={460} ry={60} fill="#ffe8a0" opacity={0.08} />
       {/* sillas detrás */}
       {[170, 910].map((cx) => (
         <g key={cx}>
@@ -126,9 +142,67 @@ export const Comedor: React.FC<{ mesaY?: number; tono?: number; hora?: number; r
       <path d={`M-60,${mesaY} L1140,${mesaY}`} stroke={INK} strokeWidth={SW} />
       {Array.from({ length: 9 }).map((_, i) => <line key={i} x1={-40 + i * 140} y1={mesaY + 20} x2={-40 + i * 140} y2={mesaY + 300} stroke="#e05050" strokeWidth={10} opacity={0.5} />)}
       <rect x={-60} y={mesaY - 20} width={1200} height={20} fill="#8a5a3a" {...P} />
+      <Vela x={150} y={mesaY - 20} />
+      <Vaso x={250} y={mesaY - 20} />
+      <Vaso x={840} y={mesaY - 20} />
+      <Cubiertos x={960} y={mesaY - 26} />
     </g>
   );
 };
+
+/** papel tapiz de rombos */
+export const Tapiz: React.FC<{ y0: number; y1: number; color: string }> = ({ y0, y1, color }) => (
+  <g opacity={0.5}>
+    {Array.from({ length: Math.ceil((y1 - y0) / 110) }).map((_, r) => Array.from({ length: 18 }).map((_, c) => (
+      <path key={r + '-' + c} transform={`translate(${-400 + c * 110 + (r % 2) * 55},${y0 + r * 110 + 55})`} d="M0,-14 L10,0 L0,14 L-10,0 Z" fill={color} />
+    )))}
+  </g>
+);
+/** piso de duela */
+export const Piso: React.FC<{ y: number; color?: string }> = ({ y, color = '#5a3424' }) => (
+  <g>
+    <rect x={-400} y={y} width={1880} height={1200} fill={color} />
+    {Array.from({ length: 14 }).map((_, i) => <line key={i} x1={-400} x2={1480} y1={y + 30 + i * 70} y2={y + 30 + i * 70} stroke="#000" strokeOpacity={0.3} strokeWidth={4} />)}
+    {Array.from({ length: 60 }).map((_, i) => <line key={'v' + i} x1={-400 + ((i * 263) % 1880)} x2={-400 + ((i * 263) % 1880)} y1={y + 30 + (i % 14) * 70} y2={y + 100 + (i % 14) * 70} stroke="#000" strokeOpacity={0.3} strokeWidth={4} />)}
+  </g>
+);
+export const Planta: React.FC<{ x: number; y: number; s?: number }> = ({ x, y, s = 1 }) => {
+  const f = useCurrentFrame();
+  return (
+    <g transform={`translate(${x},${y}) scale(${s})`}>
+      {[-50, -20, 10, 40, 70].map((a, i) => (
+        <path key={i} transform={`rotate(${a + Math.sin(f / 30 + i) * 3})`} d="M0,-60 C30,-120 20,-200 0,-230 C-20,-200 -30,-120 0,-60 Z" fill={i % 2 ? '#5fae3a' : '#7ed957'} {...P} strokeWidth={4} />
+      ))}
+      <path d="M-60,-70 L60,-70 L44,40 L-44,40 Z" fill="#c0553f" {...P} />
+      <rect x={-68} y={-86} width={136} height={24} rx={8} fill="#d86a50" {...P} strokeWidth={4} />
+    </g>
+  );
+};
+export const Vela: React.FC<{ x: number; y: number }> = ({ x, y }) => {
+  const f = useCurrentFrame();
+  return (
+    <g transform={`translate(${x},${y})`}>
+      <circle cx={0} cy={-150} r={50} fill="#ffcf4a" opacity={0.15} />
+      <rect x={-16} y={-110} width={32} height={110} rx={6} fill="#f4f1ea" {...P} strokeWidth={4} />
+      <path d={`M0,-150 Q${12 + Math.sin(f / 2) * 3},-128 0,-112 Q${-12 + Math.sin(f / 2) * 3},-128 0,-150 Z`} fill="#ffb02e" {...P} strokeWidth={3} />
+      <ellipse cx={0} cy={0} rx={34} ry={10} fill="#c8a060" {...P} strokeWidth={4} />
+    </g>
+  );
+};
+export const Vaso: React.FC<{ x: number; y: number }> = ({ x, y }) => (
+  <g transform={`translate(${x},${y})`}>
+    <path d="M-28,-100 L28,-100 L22,0 L-22,0 Z" fill="#bfe6ff" opacity={0.55} {...P} strokeWidth={4} />
+    <path d="M-25,-60 L25,-60 L22,0 L-22,0 Z" fill="#e85a6a" opacity={0.7} />
+    <line x1={-14} y1={-90} x2={-12} y2={-20} stroke="#fff" strokeWidth={5} strokeLinecap="round" opacity={0.7} />
+  </g>
+);
+export const Cubiertos: React.FC<{ x: number; y: number }> = ({ x, y }) => (
+  <g transform={`translate(${x},${y}) rotate(-80)`}>
+    <rect x={-8} y={-70} width={16} height={120} rx={6} fill="#c8ccd8" {...P} strokeWidth={4} />
+    <rect x={20} y={-70} width={16} height={120} rx={6} fill="#c8ccd8" {...P} strokeWidth={4} />
+    <path d="M20,-70 l0,-30 m8,30 l0,-30 m8,30 l0,-30" stroke={INK} strokeWidth={4} />
+  </g>
+);
 
 /** Recámara: pared, ventana con luna/lluvia, buró con lámpara, cama, tapete y pantuflas */
 export const Recamara: React.FC<{ hora?: number; lluvia?: boolean; camaY?: number; children?: React.ReactNode; tono?: number }> = ({ hora = 2, lluvia = false, camaY = 1250, children, tono = 0 }) => {
@@ -137,12 +211,15 @@ export const Recamara: React.FC<{ hora?: number; lluvia?: boolean; camaY?: numbe
     <g>
       <rect x={-400} y={-300} width={1880} height={2600} fill={pared} />
       {Array.from({ length: 9 }).map((_, i) => <circle key={i} cx={60 + (i % 3) * 420} cy={300 + Math.floor(i / 3) * 360} r={8} fill="#fff" opacity={0.08} />)}
-      <rect x={-400} y={1500} width={1880} height={800} fill="#22243e" />
+      <Tapiz y0={-300} y1={1200} color={mix(pared, '#ffffff', 0.12)} />
+      <rect x={-400} y={1200} width={1880} height={300} fill={mix(pared, '#000', 0.22)} {...P} />
+      <Piso y={1500} color="#4a2e26" />
       <Ventana x={90} y={500} w={280} h={330} hora={hora} lluvia={lluvia} />
       <ellipse cx={540} cy={1760} rx={420} ry={90} fill="#7a3a5a" {...P} />
       {/* buró y lámpara */}
       <rect x={820} y={1180} width={220} height={300} rx={12} fill="#6b4a3a" {...P} />
       <rect x={846} y={1240} width={168} height={80} rx={8} fill="#55382c" {...P} strokeWidth={4} />
+      {['#3f6fae', '#7ed957', '#ffcf4a'].map((c, i) => <rect key={c} x={850} y={1150 - i * 22} width={60 - i * 6} height={22} rx={4} fill={c} {...P} strokeWidth={4} />)}
       <rect x={920} y={1060} width={22} height={120} fill="#4a3428" {...P} strokeWidth={4} />
       <path d="M870,1070 L990,1070 L960,980 L900,980 Z" fill="#ffcf4a" {...P} />
       {/* cama */}

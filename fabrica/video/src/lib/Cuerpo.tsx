@@ -69,6 +69,8 @@ export const Cerebro: React.FC<{ ojos?: Ojos; boca?: 'sonrisa' | 'o' | 'bostezo'
         <path d="M110,70 Q150,40 180,60" />
         <path d="M0,-150 Q-10,-120 10,-100" />
       </g>
+      <path d="M-170,60 C-120,140 60,150 150,100 C110,150 -60,160 -120,120 C-190,110 -210,70 -170,60 Z" fill="#000" opacity={0.12} />
+      <ellipse cx={-80} cy={-110} rx={50} ry={20} fill="#fff" opacity={0.35} transform="rotate(-15,-80,-110)" />
       <Ojitos y={10} sep={56} r={34} tipo={ojos} mira={mira} iris="#e0a800" piel={color} />
       <Boquita y={78} tipo={boca} w={28} />
       {audifonos && (
@@ -95,6 +97,8 @@ export const Estomago: React.FC<{ lleno?: number; amasa?: number; ojos?: Ojos; b
       <g fill="none" stroke="#fff" strokeOpacity={0.75} strokeWidth={8 / k} strokeLinecap="round">
         <path d="M-120,-20 Q-60,-50 -10,-20" /><path d="M-130,40 Q-50,10 20,40" /><path d="M-100,100 Q0,80 100,100" /><path d="M60,10 Q110,-10 150,20" />
       </g>
+      <ellipse cx={-120} cy={-40} rx={22} ry={40} fill="#fff" opacity={0.3} transform="rotate(25,-120,-40)" />
+      <path d="M-150,80 C-100,150 80,170 160,80 C150,150 40,180 -40,150 C-100,140 -140,110 -150,80 Z" fill="#000" opacity={0.15} />
       <Ojitos x={-40} y={20} sep={34} r={22} tipo={ojos} piel="#e8505b" />
       <Boquita x={-40} y={70} tipo={boca} w={20} />
     </g>
@@ -110,6 +114,8 @@ export const Corazon: React.FC<{ bpm?: number; ojos?: Ojos; boca?: 'sonrisa' | '
     <g transform={`scale(${1 + b * 0.12})`}>
       <path d="M0,170 C-60,110 -200,40 -200,-60 C-200,-140 -120,-180 -60,-160 C-30,-150 -10,-130 0,-110 C10,-130 30,-150 60,-160 C120,-180 200,-140 200,-60 C200,40 60,110 0,170 Z" fill="#e8505b" stroke={INK} strokeWidth={SW} strokeLinejoin="round" />
       <ellipse cx={-110} cy={-90} rx={40} ry={22} fill="#fff" opacity={0.35} transform="rotate(-30,-110,-90)" />
+      <path d="M0,170 C-60,110 -200,40 -200,-60 C-160,40 -40,100 0,130 C40,100 160,40 200,-60 C200,40 60,110 0,170 Z" fill="#000" opacity={0.15} />
+      <path d="M40,-150 Q80,-110 60,-60" stroke="#b83040" strokeWidth={8} fill="none" strokeLinecap="round" />
       <Ojitos y={-20} sep={52} r={28} tipo={ojos} piel="#e8505b" />
       <Boquita y={50} tipo={boca} w={26} />
     </g>

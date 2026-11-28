@@ -20,13 +20,29 @@ intestino, mensajeros, rayos, ojitos) y `Escenarios.tsx` (comedor, recámara, sa
   los 3, haz los que alcancen y dilo en el resumen final.
 - Lee `fabrica/registro.md` para **no repetir temas**.
 
-## 1 · Elegir los temas (curiosidades del cuerpo humano)
-- Busca con WebSearch (modo standard, varias búsquedas en paralelo): noticias de salud y ciencia de esta semana,
-  lo que pasa en la fecha (temporada, clima, fiestas, eventos deportivos), y preguntas virales tipo "¿por qué…?".
-- Elige 3 temas con **gancho fuerte** (pregunta que todos se han hecho, mito que se desmiente, dato sorprendente)
-  y que se puedan **contar con personajes y situaciones**, no con gráficas. Prioriza: actualidad > temporada > clásico viral.
-- Verifica cada dato con al menos una fuente confiable (OMS, NIH, Mayo Clinic, MedlinePlus, revistas científicas,
-  universidades). Si algo es incierto, dilo con cautela ("podría", "se cree"). Nada de consejos médicos peligrosos.
+## 1 · Elegir los temas: cosas NUEVAS, no lo típico
+El usuario no quiere las curiosidades de siempre. Busca en este orden (WebSearch modo standard, varias búsquedas
+en paralelo; usa `allowed_domains` para cada grupo de fuentes):
+1. **Estudios de esta semana sobre el cuerpo humano**: eurekalert.org, sciencedaily.com, medicalxpress.com,
+   newscientist.com, sciencenews.org, theconversation.com, agenciasinc.es, nature.com/news.
+   Búsquedas tipo "researchers discover human body <mes año>", "study finds <órgano/sentido> <mes año>",
+   "descubren cuerpo humano estudio <mes año>". Lo ideal: algo que se supo hace días y casi nadie ha contado.
+2. **Preguntas reales de la gente**: reddit.com (r/askscience, r/explainlikeimfive, r/NoStupidQuestions) con
+   "why does my body…", y "la gente también pregunta" en español.
+3. **La fecha**: estación, clima, fiestas, eventos deportivos o noticias del día que tengan un ángulo corporal.
+
+Proceso:
+- Escribe **10 candidatas** en `fabrica/ideas/AAAA-MM-DD.md` con: pregunta gancho, de dónde salió (URL) y
+  puntuación 1-5 en **novedad**, **gancho**, **se puede animar con personajes** y **solidez de la evidencia**.
+- **Lista negra** (solo se permite si hay un estudio nuevo con un ángulo sorprendente): hipo, bostezo contagioso,
+  piel de gallina, crujir los nudillos, "usamos el 10 % del cerebro", uñas o pelo que crecen tras morir,
+  estornudar con los ojos abiertos, no poder hacerse cosquillas, dedos arrugados en el agua, "el corazón se
+  detiene al estornudar", mariposas en el estómago, el ombligo, bostezos en general, y cualquier tema de
+  `fabrica/registro.md`.
+- Elige las 3 mejores con novedad ≥ 4 y suma ≥ 15. Que no se parezcan entre sí (distintos órganos o sistemas).
+- Verifica cada dato con al menos una fuente confiable (el estudio original o su nota de prensa, OMS, NIH,
+  Mayo Clinic, Cleveland Clinic, MedlinePlus, universidades). Si es un estudio pequeño o preliminar, dilo en el
+  guion con cautela ("un estudio reciente sugiere…"). Nada de consejos médicos peligrosos.
 
 ## 2 · Guion (por video)
 - Carpeta de datos: `fabrica/videos/AAAA-MM-DD-tema-corto/` (slug en minúsculas con guiones).
@@ -35,11 +51,16 @@ intestino, mensajeros, rayos, ojitos) y `Escenarios.tsx` (comedor, recámara, sa
 - `fuentes.md`: las URLs que respaldan los datos. **Solo URLs que aparecieron en tus resultados de búsqueda o que abriste**; nunca escritas de memoria.
 
 ## 3 · Voz (ElevenLabs)
-- `creative_generate_speech` con `voice_id: c6SfcYrb2t09NHXiT80T` (Jarnathan), `model_id: eleven_v4`,
+Hay dos vías; usa la que esté disponible en la sesión:
+- **A) Conector de ElevenLabs** (herramientas `mcp__ElevenLabs__*`; cárgalas con ToolSearch "elevenlabs speech"):
+  `creative_generate_speech` con `voice_id: c6SfcYrb2t09NHXiT80T` (Jarnathan), `model_id: eleven_v4`,
   `generations_count: 1`, y como `prompt` el texto EXACTO de `guion.txt`.
 - Espera con `creative_get_flow_run_status` (respeta `poll_after_seconds`). **Nunca** repitas la llamada de
   generación para reintentar: cobra otra vez.
-- Descarga el `content_url` con `curl -sSf -o narracion.mp3 "<url>"` en la carpeta del video.
+  Descarga el `content_url` con `curl -sSf -o narracion.mp3 "<url>"` en la carpeta del video.
+- **B) Clave de API en el entorno** (secreto de red para api.elevenlabs.io): `fabrica/scripts/voz.sh fabrica/videos/<slug>`.
+- Si ninguna funciona, NO inventes audio ni uses otra voz: termina el guion y las ideas, y explica en el
+  resumen que falta conectar ElevenLabs (conector en la tarea programada o clave en el entorno).
 
 ## 4 · Escenas (lo más importante)
 - `python3 fabrica/scripts/alinear.py fabrica/videos/<slug>` imprime cada frase con sus tiempos.
