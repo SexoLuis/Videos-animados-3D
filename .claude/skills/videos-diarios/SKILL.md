@@ -96,14 +96,18 @@ Hay dos vías; usa la que esté disponible en la sesión:
     `zoom` (entrar al cuerpo o acercarse a un detalle), `barrido` (cambio rápido de lugar o de idea),
     `empuje` (subir o bajar por el cuerpo), `iris` (revelar o enfocar algo), `destello` (giro, sorpresa, remate),
     `fundido` (paso de tiempo o momento tranquilo). Varíalas: no repitas la misma más de 2 veces seguidas.
-- **Subtítulos**: usa los de la plantilla (blancos, sobrios, sin recuadros, la palabra clave en amarillo suave),
-  **aunque la skill de estilo diga recuadro verde lima**: el usuario pidió subtítulos que no opaquen el video.
+- **Subtítulos**: usa los de la plantilla, estilo **contorno** (elegido por el usuario: letra gruesa blanca con
+  contorno negro, la palabra que suena crece un poco, la clave en amarillo suave), **aunque la skill de estilo
+  diga recuadro verde lima**: el usuario pidió subtítulos presentables que no opaquen el video.
   En `CLAVES` pon pocas palabras (las de verdad importantes): solo se resalta una por frase.
 - Prohibido: diálogos, bocas que se mueven como si hablaran, texto dentro de las escenas (salvo cifras), arte
   importante por encima de y≈430 (zona de subtítulos) o tapando caras.
 - Si un componente de la biblioteca te sirvió y es genérico, muévelo a `lib/` para los próximos videos.
 - `fabrica/videos/<slug>/eventos.json`: efectos sincronizados `[{"t": s, "sfx": nombre, "g": ganancia, "d": dur}]`
-  (lista de efectos en `fabrica/scripts/audio.py`).
+  (lista de efectos en `fabrica/scripts/audio.py`). Los efectos van suaves: no subas la ganancia por encima de 1.
+- `fabrica/videos/<slug>/ambientes.json`: **sonido de fondo según la escena**, distinto en cada video:
+  `[{"desde": s, "hasta": s, "tipo": "comedor"}, ...]`. Tipos: comedor, noche, lluvia, cuerpo, control, calle,
+  cocina, gimnasio, oficina, naturaleza. Cubre todo el video, cambiando de ambiente cuando cambia el lugar.
 
 ## 5 · Revisión y render (los 3 a la vez)
 - Por cada video: `fabrica/scripts/render.sh <slug> --prueba` → mira `fabrica/videos/<slug>/hoja.png` con Read y

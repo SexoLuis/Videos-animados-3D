@@ -1,0 +1,8 @@
+[
+ {"desde": 0, "hasta": 6.0, "tipo": "comedor"},
+ {"desde": 6.0, "hasta": 14.0, "tipo": "comedor", "g": 0.6},
+ {"desde": 14.0, "hasta": 15.5, "tipo": "cuerpo"},
+ {"desde": 15.5, "hasta": 18.8, "tipo": "control"},
+ {"desde": 18.8, "hasta": 34.1, "tipo": "cuerpo"},
+ {"desde": 34.1, "hasta": 48.0, "tipo": "comedor"}
+]

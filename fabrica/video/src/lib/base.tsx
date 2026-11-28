@@ -105,37 +105,63 @@ export const trocear = (palabras: Palabra[]) => {
   return out;
 };
 
+export type EstiloSubs = 'contorno' | 'capsula' | 'karaoke';
+/** Estilo de subtítulos por defecto de la fábrica */
+export const SUBS_POR_DEFECTO: EstiloSubs = 'contorno';
+
 /**
- * Subtítulos arriba, sobrios: blanco con sombra suave, sin recuadros. Cada palabra aparece cuando se dice
- * (sube y se aclara); la palabra clave se pinta en amarillo suave con un pequeño salto.
+ * Subtítulos arriba. Tres estilos, todos sin saturar de color:
+ *  - contorno: letra gruesa blanca con contorno negro; la palabra que suena crece un poco; la clave en amarillo suave.
+ *  - capsula: frase sobre una cápsula oscura translúcida; la palabra que suena se subraya en amarillo suave.
+ *  - karaoke: letra con contorno; la palabra que suena lleva un resalte suave que se mueve de palabra en palabra.
  */
-export const Subtitulos: React.FC<{ palabras: Palabra[]; claves: string[] }> = ({ palabras, claves }) => {
+export const Subtitulos: React.FC<{ palabras: Palabra[]; claves: string[]; estilo?: EstiloSubs }> = ({ palabras, claves, estilo = SUBS_POR_DEFECTO }) => {
   const f = useCurrentFrame();
   const t = f / FPS;
   const trozos = React.useMemo(() => trocear(palabras), [palabras]);
   const set = React.useMemo(() => new Set(claves.map(norm)), [claves]);
   const fin = (i: number) => (trozos[i + 1] ? trozos[i + 1][0].start - 0.05 : trozos[i][trozos[i].length - 1].end + 0.8);
-  const idx = trozos.findIndex((c, i) => t >= c[0].start - 0.1 && t < fin(i));
+  const idx = trozos.findIndex((c, i) => t >= c[0].start - 0.12 && t < fin(i));
   if (idx < 0) return null;
   const c = trozos[idx];
-  const o = interpolate(t, [fin(idx) - 0.12, fin(idx)], [1, 0], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
+  const ini = c[0].start - 0.12;
+  const o = interpolate(t, [ini, ini + 0.1, fin(idx) - 0.1, fin(idx)], [0, 1, 1, 0], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
+  const entra = interpolate(t, [ini, ini + 0.18], [0.85, 1], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: Easing.out(Easing.back(2)) });
+  const activa = c.findIndex((p, i) => t >= p.start - 0.03 && (i === c.length - 1 || t < c[i + 1].start - 0.03));
+  const contorno = '-3px -3px 0 #120c16, 3px -3px 0 #120c16, -3px 3px 0 #120c16, 3px 3px 0 #120c16, 0 6px 0 #120c16, 0 8px 16px rgba(0,0,0,.5)';
   let n = 0;
+  const palabrasJSX = c.map((p, i) => {
+    const dicha = t >= p.start - 0.03;
+    const esActiva = i === activa;
+    const clave = set.has(norm(p.w)) && n < 1;
+    if (clave) n++;
+    const base: React.CSSProperties = { display: 'inline-block', margin: '0 8px', fontFamily: 'Poppins, sans-serif', fontWeight: 800, letterSpacing: 0.5, position: 'relative' };
+    if (estilo === 'contorno') {
+      return <span key={i} style={{ ...base, fontSize: 68, color: clave && dicha ? '#ffe08a' : '#fff', opacity: dicha ? 1 : 0.55, textShadow: contorno, margin: '0 14px',
+        transform: `scale(${esActiva ? 1.1 : 1})` }}>{p.w.toUpperCase()}</span>;
+    }
+    if (estilo === 'capsula') {
+      return (
+        <span key={i} style={{ ...base, fontSize: 60, color: clave && dicha ? '#ffe08a' : '#fff', opacity: dicha ? 1 : 0.5, textShadow: '0 2px 6px rgba(0,0,0,.4)' }}>
+          {p.w.toUpperCase()}
+          {esActiva && <span style={{ position: 'absolute', left: 0, right: 0, bottom: -4, height: 7, borderRadius: 4, background: '#ffe08a' }} />}
+        </span>
+      );
+    }
+    // karaoke
+    return (
+      <span key={i} style={{ ...base, fontSize: 66, color: clave ? '#ffe08a' : '#fff', opacity: dicha ? 1 : 0.6, textShadow: contorno, padding: '0 10px',
+        transform: `scale(${esActiva ? 1.08 : 1}) rotate(${esActiva ? -1.5 : 0}deg)` }}>
+        {esActiva && <span style={{ position: 'absolute', inset: '4px -2px 0 -2px', borderRadius: 14, background: 'rgba(255,255,255,.16)', border: '3px solid rgba(255,255,255,.55)', zIndex: -1 }} />}
+        {p.w.toUpperCase()}
+      </span>
+    );
+  });
   return (
-    <div style={{ position: 'absolute', top: 220, left: 90, width: 900, textAlign: 'center', opacity: o, lineHeight: 1.25 }}>
-      {c.map((p, i) => {
-        const k = Math.max(0, Math.min(1, (t - p.start + 0.06) / 0.12));
-        const clave = set.has(norm(p.w)) && n < 1;
-        if (clave) n++;
-        const salto = clave ? 1 + 0.12 * Math.max(0, Math.sin(Math.min(1, (t - p.start) / 0.25) * Math.PI)) : 1;
-        return (
-          <span key={i} style={{
-            display: 'inline-block', margin: '0 9px', fontFamily: 'Poppins, sans-serif', fontWeight: 800, fontSize: 60, letterSpacing: 0.5,
-            color: clave ? '#ffe08a' : '#ffffff', opacity: 0.25 + 0.75 * k,
-            transform: `translateY(${(1 - k) * 14}px) scale(${salto})`,
-            textShadow: '0 3px 0 rgba(0,0,0,.55), 0 0 14px rgba(0,0,0,.55)',
-          }}>{p.w.toUpperCase()}</span>
-        );
-      })}
+    <div style={{ position: 'absolute', top: 210, left: 70, width: 940, textAlign: 'center', opacity: o, lineHeight: 1.3, transform: `scale(${entra})`, isolation: 'isolate' }}>
+      {estilo === 'capsula' ? (
+        <span style={{ display: 'inline-block', padding: '14px 22px 18px', borderRadius: 26, background: 'rgba(12,8,18,.55)', border: '2px solid rgba(255,255,255,.12)' }}>{palabrasJSX}</span>
+      ) : palabrasJSX}
     </div>
   );
 };
@@ -221,7 +247,7 @@ export const Video: React.FC<{ planos: PlanoDef[]; total: number; palabras: Pala
         })}
       </Golpes>
       <AbsoluteFill style={{ background: 'linear-gradient(to bottom, rgba(8,4,10,.45) 0%, rgba(8,4,10,0) 24%)' }} />
-      <Subtitulos palabras={palabras} claves={claves} />
+      <Subtitulos palabras={palabras} claves={claves} estilo={((getInputProps() as { subs?: EstiloSubs }).subs) ?? SUBS_POR_DEFECTO} />
       <MarcaDeAgua />
       <Audio src={staticFile(((getInputProps() as { audio?: string }).audio) ?? audio)} />
     </AbsoluteFill>
