@@ -32,7 +32,7 @@ intestino, mensajeros, rayos, ojitos) y `Escenarios.tsx` (comedor, recámara, sa
 - Carpeta de datos: `fabrica/videos/AAAA-MM-DD-tema-corto/` (slug en minúsculas con guiones).
 - `guion.txt`: **105-130 palabras** (≈45-55 s), español latino neutral, frases cortas.
   Estructura: gancho con pregunta (1-2 frases) → explicación en 3-4 pasos visualizables → remate gracioso.
-- `fuentes.md`: las URLs que respaldan los datos.
+- `fuentes.md`: las URLs que respaldan los datos. **Solo URLs que aparecieron en tus resultados de búsqueda o que abriste**; nunca escritas de memoria.
 
 ## 3 · Voz (ElevenLabs)
 - `creative_generate_speech` con `voice_id: c6SfcYrb2t09NHXiT80T` (Jarnathan), `model_id: eleven_v4`,
