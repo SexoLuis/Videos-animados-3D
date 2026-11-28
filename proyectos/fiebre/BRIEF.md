@@ -1,10 +1,10 @@
-# Curiosidad: ¿Por qué sentimos frío cuando tenemos fiebre? (≈1:15, 9:16)
+# Curiosidad: ¿Por qué sentimos frío cuando tenemos fiebre? (53 s, 9:16)
 
 ## Entrega
-- MP4 1080 × 1920, 30 fps, duración = la del audio de narración (≈75 s), sin acelerar ni alterar el audio.
+- MP4 1080 × 1920, 30 fps, duración = la del audio de narración (52,85 s) + 0,5 s de remate, sin acelerar ni alterar el audio.
 - Subtítulos grandes sincronizados palabra a palabra, con palabras clave resaltadas.
-- Marca de agua **@CortoYCurioso** centrada abajo (por encima de la zona de subtítulos). Ningún otro texto en las escenas.
-- Destino: `proyectos/fiebre/fiebre_75s.mp4`.
+- Marca de agua **@CortoYCurioso** centrada abajo (los subtítulos van arriba). Ningún otro texto en las escenas.
+- Destino: `proyectos/fiebre/fiebre.mp4`.
 
 ## Estilo (el ya establecido, no reinventar)
 Animación 3D cinematográfica · Glow oscuro con iluminación intensa · azul (frío) vs. rojo/naranja (calor) ·
@@ -45,13 +45,16 @@ El orden sigue a la narración (las manos y pies helados se mencionan antes de "
 
 Los tiempos por palabra están en `tiempos.json` (generado por `alinear.py` a partir de `guion.txt` y del audio).
 
-## Flujo de producción
-1. Audio de narración del usuario → transcripción con tiempos por palabra → ajustar los cortes de la tabla.
-2. Hoja de personaje (imagen) → aprobación del usuario.
-3. Un fotograma clave por plano (edición de imagen con la hoja de personaje como referencia, para mantener la identidad).
-4. Image-to-video por plano, sin audio generado.
-5. Montaje en Remotion: cortes exactos al audio, transiciones, subtítulos, marca de agua, −14 LUFS.
+## Cómo se hizo (sin servicios de pago)
+fal estaba sin créditos y el usuario pidió hacerlo con las herramientas propias, así que todo está dibujado en código:
+- `video/`: proyecto Remotion (SVG animado en 2.5D con glow, luz volumétrica y cámara dinámica), en el estilo
+  **curiosidades glow oscuro**: el personaje es la silueta azul luminosa (con gorro gris, pompón rojo y nariz roja),
+  que se vuelve roja con la fiebre. Subtítulos arriba con la palabra clave en recuadro ámbar y marca **@CortoYCurioso**.
+- `alinear.py`: tiempos por palabra a partir de `guion.txt` y del audio (detección de voz + programación dinámica).
+- `audio.py`: música sintetizada (98 BPM, Am-F-C-G) con ducking y efectos sincronizados. La narración se mezcla sin tocar.
 
-## Pendiente
-- [x] Audio de narración (`narracion.mp3`, 52,85 s).
-- [ ] Aprobación del gasto en fal (imágenes + video).
+```bash
+python3 alinear.py && python3 audio.py
+cd video && npm install
+npx remotion render src/index.ts Fiebre ../fiebre.mp4 --browser-executable=/usr/bin/google-chrome --concurrency=3 --crf=18 --gl=swangle
+```
