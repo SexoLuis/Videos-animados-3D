@@ -105,33 +105,34 @@ export const trocear = (palabras: Palabra[]) => {
   return out;
 };
 
-/** Subtítulos arriba: pendientes atenuadas, dichas en blanco, clave en recuadro lima */
+/**
+ * Subtítulos arriba, sobrios: blanco con sombra suave, sin recuadros. Cada palabra aparece cuando se dice
+ * (sube y se aclara); la palabra clave se pinta en amarillo suave con un pequeño salto.
+ */
 export const Subtitulos: React.FC<{ palabras: Palabra[]; claves: string[] }> = ({ palabras, claves }) => {
   const f = useCurrentFrame();
   const t = f / FPS;
   const trozos = React.useMemo(() => trocear(palabras), [palabras]);
   const set = React.useMemo(() => new Set(claves.map(norm)), [claves]);
   const fin = (i: number) => (trozos[i + 1] ? trozos[i + 1][0].start - 0.05 : trozos[i][trozos[i].length - 1].end + 0.8);
-  const idx = trozos.findIndex((c, i) => t >= c[0].start - 0.12 && t < fin(i));
+  const idx = trozos.findIndex((c, i) => t >= c[0].start - 0.1 && t < fin(i));
   if (idx < 0) return null;
   const c = trozos[idx];
-  const o = interpolate(t, [c[0].start - 0.12, c[0].start, fin(idx) - 0.15, fin(idx)], [0, 1, 1, 0], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
-  const sc = interpolate(t, [c[0].start - 0.12, c[0].start + 0.08], [0.9, 1], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
+  const o = interpolate(t, [fin(idx) - 0.12, fin(idx)], [1, 0], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
   let n = 0;
   return (
-    <div style={{ position: 'absolute', top: 210, left: 80, width: 920, textAlign: 'center', opacity: o, transform: `scale(${sc})`, lineHeight: 1.3 }}>
+    <div style={{ position: 'absolute', top: 220, left: 90, width: 900, textAlign: 'center', opacity: o, lineHeight: 1.25 }}>
       {c.map((p, i) => {
-        const dicha = t >= p.start - 0.03;
-        const clave = set.has(norm(p.w)) && n < 2;
+        const k = Math.max(0, Math.min(1, (t - p.start + 0.06) / 0.12));
+        const clave = set.has(norm(p.w)) && n < 1;
         if (clave) n++;
+        const salto = clave ? 1 + 0.12 * Math.max(0, Math.sin(Math.min(1, (t - p.start) / 0.25) * Math.PI)) : 1;
         return (
           <span key={i} style={{
-            display: 'inline-block', margin: '0 8px', fontFamily: 'Poppins, sans-serif', fontWeight: 800, fontSize: 64,
-            color: clave ? '#14210a' : '#fff', opacity: clave || dicha ? 1 : 0.45,
-            background: clave ? '#aef04e' : 'transparent', borderRadius: 10, padding: clave ? '0 12px' : 0,
-            transform: clave && dicha ? `scale(${1 + 0.06 * Math.max(0, 1 - (t - p.start) * 4)})` : 'none',
-            textShadow: clave ? 'none' : '0 4px 0 rgba(10,6,12,.9), 0 0 18px rgba(0,0,0,.6)',
-            boxShadow: clave ? '0 4px 0 rgba(10,6,12,.9)' : 'none',
+            display: 'inline-block', margin: '0 9px', fontFamily: 'Poppins, sans-serif', fontWeight: 800, fontSize: 60, letterSpacing: 0.5,
+            color: clave ? '#ffe08a' : '#ffffff', opacity: 0.25 + 0.75 * k,
+            transform: `translateY(${(1 - k) * 14}px) scale(${salto})`,
+            textShadow: '0 3px 0 rgba(0,0,0,.55), 0 0 14px rgba(0,0,0,.55)',
           }}>{p.w.toUpperCase()}</span>
         );
       })}
@@ -144,28 +145,85 @@ export const MarcaDeAgua: React.FC = () => (
     fontSize: 44, color: 'rgba(255,255,255,.92)', WebkitTextStroke: '2px rgba(20,10,20,.9)', paintOrder: 'stroke fill', textShadow: '0 3px 8px rgba(0,0,0,.7)' }}>@CortoYCurioso</div>
 );
 
-const Fade: React.FC<{ first: boolean; children: React.ReactNode }> = ({ first, children }) => {
+// ---------- transiciones ----------
+export type Transicion = 'fundido' | 'zoom' | 'barrido' | 'empuje' | 'iris' | 'destello';
+export const T_TRANS = 12; // fotogramas que dura cada transición
+const EZ = Easing.bezier(0.65, 0, 0.35, 1);
+const cl = (x: number) => Math.max(0, Math.min(1, x));
+
+/** Envuelve un plano y aplica la transición de entrada (la suya) y de salida (la del plano siguiente). */
+const Plano: React.FC<{ dur: number; entra?: Transicion; sale?: Transicion; children: React.ReactNode }> = ({ dur, entra, sale, children }) => {
   const f = useCurrentFrame();
-  return <AbsoluteFill style={{ opacity: first ? 1 : interpolate(f, [0, 10], [0, 1], { extrapolateRight: 'clamp' }) }}>{children}</AbsoluteFill>;
+  const pi = entra ? EZ(cl(f / T_TRANS)) : 1;
+  const po = sale ? EZ(cl((f - dur) / T_TRANS)) : 0;
+  let opacity = 1, tx = 0, ty = 0, sc = 1 + 0.035 * cl(f / Math.max(1, dur)), blur = 0, clip: string | undefined, flash = 0;
+  if (entra && pi < 1) {
+    if (entra === 'fundido') opacity = pi;
+    if (entra === 'zoom') { opacity = cl(pi * 1.6); sc *= 1.35 - 0.35 * pi; blur += (1 - pi) * 10; }
+    if (entra === 'barrido') { tx += (1 - pi) * 1080; blur += Math.sin(pi * Math.PI) * 8; }
+    if (entra === 'empuje') { ty += (1 - pi) * 1920; }
+    if (entra === 'iris') clip = `circle(${pi * 1250}px at 50% 55%)`;
+    if (entra === 'destello') { opacity = cl(pi * 3); flash = (1 - pi) * 0.85; }
+  }
+  if (sale && po > 0) {
+    if (sale === 'zoom') { sc *= 1 + 0.6 * po; blur += po * 10; }
+    if (sale === 'barrido') { tx -= po * 1080; blur += Math.sin(po * Math.PI) * 8; }
+    if (sale === 'empuje') { ty -= po * 600; opacity *= 1 - po * 0.5; }
+    if (sale === 'iris') sc *= 1 + 0.08 * po;
+  }
+  return (
+    <AbsoluteFill style={{ opacity, clipPath: clip, overflow: 'hidden' }}>
+      <AbsoluteFill style={{ transform: `translate(${tx}px,${ty}px) scale(${sc})`, filter: blur > 0.3 ? `blur(${blur}px)` : undefined }}>{children}</AbsoluteFill>
+      {flash > 0 && <AbsoluteFill style={{ background: '#fff', opacity: flash }} />}
+    </AbsoluteFill>
+  );
 };
 
+/** Golpes de zoom: pequeño acercamiento rápido en cada instante (segundos), que se relaja solo. */
+const Golpes: React.FC<{ tiempos: number[]; children: React.ReactNode }> = ({ tiempos, children }) => {
+  const f = useCurrentFrame();
+  let k = 0;
+  for (const g of tiempos) {
+    const d = f - g * FPS;
+    if (d >= 0 && d < 30) k += d < 4 ? (d / 4) * 0.055 : 0.055 * Math.exp(-(d - 4) / 7);
+  }
+  return <AbsoluteFill style={{ transform: `scale(${1 + k})` }}>{children}</AbsoluteFill>;
+};
+
+export type PlanoDef = [number, React.FC] | [number, React.FC, Transicion];
+const ROTACION: Transicion[] = ['zoom', 'barrido', 'fundido', 'empuje', 'iris', 'zoom', 'destello', 'barrido'];
+
 /**
- * Plantilla de video: planos [inicio en fotogramas, componente], subtítulos, marca y audio.
- * Cada plano se alarga 10 fotogramas para el fundido con el siguiente.
+ * Plantilla de video: planos [inicio en fotogramas, componente, transición de entrada opcional],
+ * subtítulos sobrios, golpes de zoom en las palabras clave, marca de agua y audio.
+ * Si un plano no dice su transición, se usa una rotación variada.
  */
-export const Video: React.FC<{ planos: [number, React.FC][]; total: number; palabras: Palabra[]; claves: string[]; audio?: string }> = ({ planos, total, palabras, claves, audio = 'mezcla.wav' }) => (
-  <AbsoluteFill style={{ background: '#0b0e1e' }}>
-    {planos.map(([start, C], i) => {
-      const end = i + 1 < planos.length ? planos[i + 1][0] : total;
-      return (
-        <Sequence key={i} from={start} durationInFrames={end - start + (i + 1 < planos.length ? 10 : 0)}>
-          <Fade first={i === 0}><C /></Fade>
-        </Sequence>
-      );
-    })}
-    <AbsoluteFill style={{ background: 'linear-gradient(to bottom, rgba(8,4,10,.55) 0%, rgba(8,4,10,0) 26%)' }} />
-    <Subtitulos palabras={palabras} claves={claves} />
-    <MarcaDeAgua />
-    <Audio src={staticFile(((getInputProps() as { audio?: string }).audio) ?? audio)} />
-  </AbsoluteFill>
-);
+export const Video: React.FC<{ planos: PlanoDef[]; total: number; palabras: Palabra[]; claves: string[]; audio?: string; golpes?: number[] }> = ({ planos, total, palabras, claves, audio = 'mezcla.wav', golpes }) => {
+  const trans = planos.map((p, i) => (i === 0 ? undefined : (p[2] ?? ROTACION[(i - 1) % ROTACION.length])));
+  // golpes automáticos: la primera palabra clave de cada frase, separados al menos 1,5 s
+  const auto = React.useMemo(() => {
+    if (golpes) return golpes;
+    const set = new Set(claves.map(norm)); const out: number[] = [];
+    trocear(palabras).forEach((c) => { const k = c.find((p) => set.has(norm(p.w))); if (k && (!out.length || k.start - out[out.length - 1] > 1.5)) out.push(k.start); });
+    return out;
+  }, [palabras, claves, golpes]);
+  return (
+    <AbsoluteFill style={{ background: '#0b0e1e' }}>
+      <Golpes tiempos={auto}>
+        {planos.map(([start, C], i) => {
+          const end = i + 1 < planos.length ? planos[i + 1][0] : total;
+          const hay = i + 1 < planos.length;
+          return (
+            <Sequence key={i} from={start} durationInFrames={end - start + (hay ? T_TRANS : 0)}>
+              <Plano dur={end - start} entra={trans[i]} sale={hay ? trans[i + 1] : undefined}><C /></Plano>
+            </Sequence>
+          );
+        })}
+      </Golpes>
+      <AbsoluteFill style={{ background: 'linear-gradient(to bottom, rgba(8,4,10,.45) 0%, rgba(8,4,10,0) 24%)' }} />
+      <Subtitulos palabras={palabras} claves={claves} />
+      <MarcaDeAgua />
+      <Audio src={staticFile(((getInputProps() as { audio?: string }).audio) ?? audio)} />
+    </AbsoluteFill>
+  );
+};

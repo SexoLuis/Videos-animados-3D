@@ -4,7 +4,7 @@
  */
 import React from 'react';
 import { useCurrentFrame } from 'remotion';
-import { Stage, Cam, ip, lin, pop, shake, INK, SW, Zzz, Gota, Video } from '../../lib/base';
+import { Stage, Cam, ip, lin, pop, shake, INK, SW, Zzz, Gota, Video, PlanoDef } from '../../lib/base';
 import { Barbudo, Cabeza } from '../../lib/Barbudo';
 import { Cerebro, Estomago, Corazon, Pulmones, Intestino, Mensajero, Rayo, Ojitos, Boquita } from '../../lib/Cuerpo';
 import { Comedor, Plato, Reloj, SalaControl } from '../../lib/Escenarios';
@@ -356,9 +356,9 @@ const P16: React.FC = () => { // culpa al tercer plato.
   );
 };
 
-const PLANOS: [number, React.FC][] = [
-  [0, P1], [108, P2], [180, P3], [228, P4], [309, P5], [420, P6], [465, P7], [564, P8],
-  [607, P9], [663, P10], [768, P11], [921, P12], [1023, P13], [1119, P14], [1200, P15], [1330, P16],
+const PLANOS: PlanoDef[] = [
+  [0, P1], [108, P2, 'barrido'], [180, P3, 'iris'], [228, P4, 'zoom'], [309, P5, 'destello'], [420, P6, 'zoom'], [465, P7, 'zoom'], [564, P8, 'barrido'],
+  [607, P9, 'barrido'], [663, P10, 'empuje'], [768, P11, 'fundido'], [921, P12, 'zoom'], [1023, P13, 'iris'], [1119, P14, 'fundido'], [1200, P15, 'barrido'], [1330, P16, 'destello'],
 ];
 const CLAVES = ['dormir', 'pavo', 'inocente', 'triptófano', 'pollo', 'culpable', 'tamaño', 'estómago', 'descansar', 'digerir', 'corazón', 'respiración',
   'energía', 'hormonas', 'cerebro', 'satisfecho', 'sueño', 'tarde', 'reloj', 'biológico', 'sobremesa', 'tercer', 'plato'];

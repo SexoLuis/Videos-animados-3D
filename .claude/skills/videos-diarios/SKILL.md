@@ -88,6 +88,17 @@ Hay dos vías; usa la que esté disponible en la sesión:
   Reutiliza la biblioteca; crea en el propio archivo los personajes nuevos que el tema necesite (mismo estilo:
   colores planos, contorno INK de 6 px, ojitos con brillo, reacciones exageradas).
 - Todo se mueve en todo momento: cámara (`Cam` con zoom/paneo), parpadeos, rebotes, pop de entrada.
+- **Zooms y transiciones** (ya los pone la plantilla `Video`):
+  - Cada plano tiene un acercamiento lento automático, y hay un **golpe de zoom** automático en la primera
+    palabra clave de cada frase. Dentro de los planos, usa además zooms de cámara con intención: acercamiento
+    rápido a una cara en la reacción, alejamiento para revelar algo, paneo siguiendo una acción, `shake` en impactos.
+  - Cada plano declara su transición de entrada como tercer elemento: `[inicio, Plano, 'zoom']`. Opciones:
+    `zoom` (entrar al cuerpo o acercarse a un detalle), `barrido` (cambio rápido de lugar o de idea),
+    `empuje` (subir o bajar por el cuerpo), `iris` (revelar o enfocar algo), `destello` (giro, sorpresa, remate),
+    `fundido` (paso de tiempo o momento tranquilo). Varíalas: no repitas la misma más de 2 veces seguidas.
+- **Subtítulos**: usa los de la plantilla (blancos, sobrios, sin recuadros, la palabra clave en amarillo suave),
+  **aunque la skill de estilo diga recuadro verde lima**: el usuario pidió subtítulos que no opaquen el video.
+  En `CLAVES` pon pocas palabras (las de verdad importantes): solo se resalta una por frase.
 - Prohibido: diálogos, bocas que se mueven como si hablaran, texto dentro de las escenas (salvo cifras), arte
   importante por encima de y≈430 (zona de subtítulos) o tapando caras.
 - Si un componente de la biblioteca te sirvió y es genérico, muévelo a `lib/` para los próximos videos.
